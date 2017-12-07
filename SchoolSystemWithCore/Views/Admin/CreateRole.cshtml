@@ -1,0 +1,37 @@
+
+@model CreateRoleViewModel
+
+@{
+    ViewData["Title"] = "Create Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="register-box-body" style="width: 50%">
+    @if (ViewBag.Message != null)
+    {
+        <div class="box box-success box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">@ViewBag.Message</h3>
+
+                <div class="box-tools pull-right">
+                    <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+        </div>
+    }
+    <h2 style="text-align: center">Create New Role</h2>
+    <form asp-controller="Admin" asp-action="CreateRole" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+
+        <div class="form-group has-feedback">
+            <input asp-for="Name" class="form-control" placeholder="Role">
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="row">
+            <div class="col-xs-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Create New Role</button>
+            </div>
+        </div>
+    </form>
+</div>
