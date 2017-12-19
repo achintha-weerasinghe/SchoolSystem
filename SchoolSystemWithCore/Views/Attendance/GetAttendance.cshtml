@@ -1,0 +1,31 @@
+﻿@using System.Collections.Generic
+@using System.Security.Cryptography
+@using Microsoft.AspNetCore.Mvc.Rendering
+@model System.Collections.Generic.IEnumerable<SchoolSystemWithCore.Models.ViewModels.StudentAttendance>
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<link href="~/css/iCheck/flat/green.css" rel="stylesheet" />
+
+<h2>Students Attendance</h2>
+
+@foreach (var stud in Model)
+{
+    var classChecked = "";
+    if (stud.PresentAbsent)
+    {
+        classChecked = "checked";
+    }
+    <div class="form-group">
+        <label class="">
+            <div class="icheckbox_flat-green @classChecked" aria-checked="false" aria-disabled="false" style="position: relative;">
+                <input type="checkbox" class="flat-red" checked="checked" style="position: absolute; opacity: 0;">
+                <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+            </div>
+            @stud.Name
+        </label>
+    </div>
+   
+}

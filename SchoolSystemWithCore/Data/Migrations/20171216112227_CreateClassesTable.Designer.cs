@@ -8,9 +8,10 @@ using SchoolSystemWithCore.Data;
 namespace SchoolSystemWithCore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171216112227_CreateClassesTable")]
+    partial class CreateClassesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -193,19 +194,6 @@ namespace SchoolSystemWithCore.Data.Migrations
                     b.ToTable("ClassDetailses");
                 });
 
-            modelBuilder.Entity("SchoolSystemWithCore.Models.StudentClass", b =>
-                {
-                    b.Property<string>("UserId");
-
-                    b.Property<string>("ClassDetailsId");
-
-                    b.HasKey("UserId");
-
-                    b.HasIndex("ClassDetailsId");
-
-                    b.ToTable("StudentClasses");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
@@ -239,18 +227,6 @@ namespace SchoolSystemWithCore.Data.Migrations
 
                     b.HasOne("SchoolSystemWithCore.Models.ApplicationUser")
                         .WithMany("Roles")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SchoolSystemWithCore.Models.StudentClass", b =>
-                {
-                    b.HasOne("SchoolSystemWithCore.Models.ClassDetails", "ClassDetails")
-                        .WithMany()
-                        .HasForeignKey("ClassDetailsId");
-
-                    b.HasOne("SchoolSystemWithCore.Models.ApplicationUser", "User")
-                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

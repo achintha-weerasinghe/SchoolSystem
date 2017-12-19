@@ -1,0 +1,165 @@
+
+@{
+    ViewData["Title"] = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<p id="testing"></p>
+
+<!-- DIRECT CHAT PRIMARY -->
+<div class="box box-primary direct-chat direct-chat-primary">
+    <div class="box-header with-border">
+        <h3 class="box-title">@ViewBag.PersonName</h3>
+
+        <div class="box-tools pull-right">
+            <span data-toggle="tooltip" title="" class="badge bg-light-blue" data-original-title="3 New Messages">3</span>
+            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-box-tool" data-toggle="tooltip" title="" data-widget="chat-pane-toggle" data-original-title="Contacts">
+                <i class="fa fa-comments"></i></button>
+            <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+        </div>
+    </div>
+    <!-- /.box-header -->
+    <div class="box-body">
+        <!-- Conversations are loaded here -->
+        <div class="direct-chat-messages" id="directmessages">
+            @*Messages goes here*@
+        </div>
+        <small id="seen" class="pull-right" style="margin-right: 3%; color: darkgray; font-family: sans-serif;"></small>
+        <!--/.direct-chat-messages-->
+
+        <!-- Contacts are loaded here -->
+        <div class="direct-chat-contacts">
+            <ul class="contacts-list">
+                <li>
+                    <a href="#">
+                        <img class="contacts-list-img" src="~/dist/img/user1-128x128.jpg" alt="User Image">
+
+                        <div class="contacts-list-info">
+                            <span class="contacts-list-name">
+                                Count Dracula
+                                <small class="contacts-list-date pull-right">2/28/2015</small>
+                            </span>
+                            <span class="contacts-list-msg">How have you been? I was...</span>
+                        </div>
+                        <!-- /.contacts-list-info -->
+                    </a>
+                </li>
+                <!-- End Contact Item -->
+            </ul>
+            <!-- /.contatcts-list -->
+        </div>
+        <!-- /.direct-chat-pane -->
+    </div>
+    <!-- /.box-body -->
+    <div class="box-footer">
+        @*<form action="#" method="post">*@
+        <div class="input-group">
+            <input id="msgbox" type="text" name="message" placeholder="Type Message ..." class="form-control">
+            <span class="input-group-btn">
+                <button id="send" type="button" class="btn btn-primary btn-flat">Send</button>
+            </span>
+        </div>
+        @*</form>*@
+    </div>
+    <!-- /.box-footer-->
+</div>
+<!--/.direct-chat -->
+
+
+@section Scripts{
+
+    <script src="https://www.gstatic.com/firebasejs/4.8.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyCGmcgm26wFUG1LcmrJ28dYegKRB-Qf3r0",
+            authDomain: "schoolsystemwithcore.firebaseapp.com",
+            databaseURL: "https://schoolsystemwithcore.firebaseio.com",
+            projectId: "schoolsystemwithcore",
+            storageBucket: "schoolsystemwithcore.appspot.com",
+            messagingSenderId: "492247343322"
+        };
+        firebase.initializeApp(config);
+
+
+        var sendButton = document.getElementById("send");
+        var messageInput = document.getElementById("msgbox");
+        var directMsgBox = document.getElementById("directmessages");
+        var seen = document.getElementById("seen");
+
+        var sender = "@(ViewBag.UserId)";
+        var receiver = "@(ViewBag.Person)";
+        var data;
+        var prevSender;
+
+        const database = firebase.database();
+        var ref = database.ref();
+        var msgRef = ref.child("messages");
+
+        $(document).ready(function() {
+            $(messageInput).keyup(function(event) {
+                if (event.keyCode === 13) {
+                    $(sendButton).click();
+                }
+            });
+
+            //send button clicked
+            $(sendButton).click(function () {
+                data = {
+                    sentBy: sender,
+                    body: messageInput.value,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP,
+                    seen: false
+                }
+
+                var senderKey = msgRef.child(sender).child(receiver).push(data).getKey();
+                var newKey = msgRef.child(receiver).child(sender).push(data).getKey();
+                msgRef.child(sender).child(receiver).child(senderKey).update({ senderMsgKey: senderKey });
+                msgRef.child(receiver).child(sender).child(newKey).update({ senderMsgKey: senderKey });
+                messageInput.value = "";
+            });
+        });
+
+        msgRef.child(sender + "/" + receiver + "/").on('child_added', snap => {
+            var msg;
+
+            var timestamp = snap.child("timestamp").val().toString().substring(0, 10);
+            var date = new Date(timestamp * 1000);
+
+            var sentOn = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear() + "  " + date.getHours() + ":" + date.getMinutes();
+
+            if (snap.child("sentBy").val() === receiver) {
+                msg = '<div class="direct-chat-msg">' +
+                    '<div class="direct-chat-info clearfix">' +
+                    '<span class="direct-chat-name pull-left">'+ "@(ViewBag.Name)" +'</span>' +
+                    '<span class="direct-chat-timestamp pull-right">' + sentOn +'</span>' +
+                    '</div>' +
+                    '<img class="direct-chat-img" src="../dist/img/user1-128x128.jpg" alt="Message User Image">' +
+                    '<div class="direct-chat-text">' +
+                    snap.child("body").val() +
+                    '</div>' +
+                    '</div>';
+            } else {
+                msg = '<div class="direct-chat-msg right">' +
+                    '<div class="direct-chat-info clearfix">' +
+                    '<span class="direct-chat-name pull-right">'+ "@(ViewBag.PersonName)" +'</span>' +
+                    '<span class="direct-chat-timestamp pull-left">'+ sentOn +'</span>' +
+                    '</div>' +
+                    '<img class="direct-chat-img" src="../dist/img/user3-128x128.jpg" alt="Message User Image">' +
+                    '<div class="direct-chat-text">' +
+                    snap.child("body").val() +
+                    '</div>' +
+                    '</div>';
+            }
+
+            $('#directmessages').append(msg);
+            directMsgBox.scrollTop = directMsgBox.scrollHeight;
+
+            //msgRef.child(receiver).child(sender).child(snap.child("senderMsgKey").val()).update({ seen: true, lastSeen: firebase.database.ServerValue.TIMESTAMP });
+            
+        }, err => console.log(err));
+
+    </script>
+}

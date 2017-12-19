@@ -6,12 +6,14 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.Internal;
 using SchoolSystemWithCore.Data;
 using SchoolSystemWithCore.Models;
 
 namespace SchoolSystemWithCore.Controllers
 {
-    [Authorize("Admin")]
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -29,10 +31,14 @@ namespace SchoolSystemWithCore.Controllers
             _context = context;
         }
         
+        [HttpGet]
         public IActionResult Index()
         {
             ViewBag.UsersCount = _context.Users.Count();
             ViewBag.RolesCount = _context.Roles.Count();
+
+            var classCount = _context.ClassDetailses.ToList().Count;
+            ViewBag.ClassCount = classCount;
             return View();
         }
 
@@ -40,6 +46,35 @@ namespace SchoolSystemWithCore.Controllers
         public IActionResult CreateRole()
         {
             return View();
+        }
+
+        [HttpGet]
+        public IActionResult CreateClass()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateClass([Bind("ClassName")]ClassDetails model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+
+                    _context.Add(model);
+                    await _context.SaveChangesAsync();
+                    ViewBag.Message = "You have successfully created a class";
+                    return View();
+                }
+            }
+            catch (Exception e)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                                             "Try again, and if the problem persists " +
+                                             "see your system administrator.");
+            }
+            return View(model);
         }
 
         [HttpPost]
@@ -58,6 +93,11 @@ namespace SchoolSystemWithCore.Controllers
             }
 
             return View(model);
+        }
+
+        public IActionResult AssignClass()
+        {
+            return View();
         }
 
         private void AddErrors(IdentityResult result)

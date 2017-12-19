@@ -1,0 +1,39 @@
+﻿@model SchoolSystemWithCore.Models.ViewModels.AttendanceViewModel
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<div class="register-box-body" style="width: 50%">
+    <h2 style="text-align: center">Check Attendance</h2>
+    <form asp-controller="Attendance" asp-action="GetAttendance" method="post">
+        <div asp-validation-summary="All" class="text-danger"></div>
+        
+        <div class="form-group has-feedback">
+            <input asp-for="Date" type="date" class="form-control" placeholder="Date">
+            <span class="glyphicon glyphicon-calendar form-control-feedback"></span>
+            <span asp-validation-for="Date" class="text-danger"></span>
+        </div>
+
+        <div class="form-group has-feedback">
+            <input asp-for="ClassName" class="form-control" placeholder="Class Name | ex :- 8-A">
+            <span class="glyphicon glyphicon-home form-control-feedback"></span>
+            <span asp-validation-for="ClassName" class="text-danger"></span>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-4">
+                <button type="submit" class="btn btn-primary btn-block btn-flat">Get Attendance</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+@section Scripts
+{
+    <script>
+        var dateControl = document.querySelector('input[type="date"]');
+        dateControl.value = '2017-12-11';
+    </script>
+}

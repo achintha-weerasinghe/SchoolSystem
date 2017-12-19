@@ -1,0 +1,74 @@
+
+@model ChatSelectorViewModel
+@{
+    ViewData["Title"] = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h3>Who do you wanna chat with?</h3>
+
+<form hidden asp-controller="Chat" asp-action="Conversation" method="post">
+    <div class="form-group">
+        <select asp-for="Person" id="dropdown" asp-items="@ViewBag.UserList" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+        </select>
+    </div>
+    <button id="send" type="submit" class="btn btn-primary btn-block btn-flat">Chat Now</button>
+</form>
+
+
+<div class="direct-chat-contacts-open" style="background-color: #222d32; width: 50%;">
+    <div class="input-group">
+        <input type="text" id="searchInput" name="searchInput" class="form-control" placeholder="Search..." onkeyup="searchFilter()">
+        <span class="input-group-btn">
+            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+            </button>
+        </span>
+    </div>
+    <ul class="contacts-list" id="contactList">
+        @foreach (var x in ViewBag.UsersAsList)
+        {
+            <li id="@(x.Id)" onclick="getId(this.id)" style="cursor: pointer;">
+                <img class="contacts-list-img" src="~/dist/img/user1-128x128.jpg" alt="User Image">
+
+                <div class="contacts-list-info">
+                    <span class="contacts-list-name">
+                        @x.Name
+                    </span>
+                    <small class="contacts-list-date pull-right">2/28/2015</small>
+                    <span class="contacts-list-msg">How have you been? I was...</span>
+                </div>
+            </li>
+        }
+        <!-- End Contact Item -->
+    </ul>
+    <!-- /.contatcts-list -->
+</div>
+
+@section Scripts
+{
+    <script>
+        function getId(Id) {
+            var dropdown = document.getElementById("dropdown");
+            dropdown.value = Id;
+            document.getElementById("send").click();
+        }
+
+        function searchFilter() {
+            var s, i;
+            var input = document.getElementById("searchInput");
+            var filter = input.value.toUpperCase();
+            var ul = document.getElementById("contactList");
+            var li = ul.getElementsByTagName("li");
+
+            for (i = 0; i < li.length; i++) {
+                s = li[i].getElementsByTagName("span")[0];
+                if (s.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+
+                }
+            }
+        }
+    </script>
+}
