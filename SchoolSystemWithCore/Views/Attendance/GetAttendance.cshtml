@@ -1,7 +1,8 @@
 ﻿@using System.Collections.Generic
 @using System.Security.Cryptography
+@using Microsoft.AspNetCore.Mvc
 @using Microsoft.AspNetCore.Mvc.Rendering
-@model System.Collections.Generic.IEnumerable<SchoolSystemWithCore.Models.ViewModels.StudentAttendance>
+@model System.Collections.Generic.List<SchoolSystemWithCore.Models.ViewModels.StudentAttendance>
 @{
     ViewBag.Title = "title";
     Layout = "_Layout";
@@ -9,23 +10,54 @@
 
 <link href="~/css/iCheck/flat/green.css" rel="stylesheet" />
 
-<h2>Students Attendance</h2>
+<h2>Mark Students Attendance for <b>@if(ViewBag.Date != null){ @ViewBag.Date }</b></h2>
+<br />
 
-@foreach (var stud in Model)
+@if (ViewBag.Message != null)
 {
-    var classChecked = "";
-    if (stud.PresentAbsent)
-    {
-        classChecked = "checked";
-    }
-    <div class="form-group">
-        <label class="">
-            <div class="icheckbox_flat-green @classChecked" aria-checked="false" aria-disabled="false" style="position: relative;">
-                <input type="checkbox" class="flat-red" checked="checked" style="position: absolute; opacity: 0;">
-                <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+    <div class="box box-success box-solid">
+        <div class="box-header with-border">
+            <h3 class="box-title">@ViewBag.Message <a style="color:darkred; font-weight: bold;" href="@Url.Action("Index", "Attendance")">Go Back</a></h3>
+
+            <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
             </div>
-            @stud.Name
-        </label>
+        </div>
     </div>
-   
 }
+
+<form asp-controller="Attendance" asp-action="SendAttendance" method="post">
+    @for(int i=0; i<Model.Count; i++)
+    {
+        <div class="form-group">
+            <label class="">
+                <div class="icheckbox_flat-green" aria-checked="false" aria-disabled="false" style="position: relative;">
+                    <input asp-for="@Model[i].PresentAbsent" type="checkbox" class="flat-red" style="position: absolute; opacity: 0;">
+                    <ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>
+                </div>
+                @Model[i].Name
+            </label>
+            <input type="hidden" asp-for="@Model[i].P_Id" />
+            <input type="hidden" asp-for="@Model[i].Name" />
+            <input type="hidden" asp-for="@Model[i].Date"/>
+        </div>
+
+    }
+    <input value="Mark and Submit" type="submit" class="btn btn-primary btn-flat" />
+    <a href="@Url.Action("Index", "Attendance")" class="btn btn-flat btn-danger">Cancel</a>
+</form>
+
+@section Scripts {
+    <script src="~/js/icheck.js"></script>
+    <script>
+        $(document).ready(function(){
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_flat-green',
+                radioClass: 'iradio_flat-red'
+            });
+        });
+        
+    </script>
+}
+
+    

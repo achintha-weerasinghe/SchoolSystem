@@ -5,11 +5,9 @@ using System.Threading.Tasks;
 
 namespace SchoolSystemWithCore.Models.ViewModels
 {
-    public class StudentAttendance
+    public class StudentsInClassViewModel
     {
         public int P_Id { get; set; }
         public string Name { get; set; }
-        public bool PresentAbsent { get; set; }
-        public string Date { get; set; }
     }
 }
