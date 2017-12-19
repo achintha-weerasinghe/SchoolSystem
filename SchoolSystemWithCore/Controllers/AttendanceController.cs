@@ -17,7 +17,7 @@ using SchoolSystemWithCore.Models.ViewModels;
 
 namespace SchoolSystemWithCore.Controllers
 {
-    
+    [Authorize]
     public class AttendanceController : Controller
     {
         private readonly string _baseUrl = "http://attendanceazuretryschoolmanagementmorascorpions.azurewebsites.net";
