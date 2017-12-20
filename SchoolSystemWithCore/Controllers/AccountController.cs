@@ -13,6 +13,7 @@ using Microsoft.Extensions.Options;
 using SchoolSystemWithCore.Data;
 using SchoolSystemWithCore.Models;
 using SchoolSystemWithCore.Models.AccountViewModels;
+using SchoolSystemWithCore.Models.ViewModels;
 using SchoolSystemWithCore.Services;
 
 namespace SchoolSystemWithCore.Controllers
@@ -150,6 +151,10 @@ namespace SchoolSystemWithCore.Controllers
                     //    $"Please confirm your account by clicking this link: <a href='{callbackUrl}'>link</a>");
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     //_logger.LogInformation(3, "User created a new account with password.");
+                    if (model.Role == "Student")
+                    {
+                        return RedirectToAction("StudentRegister", "DisAccount", new { userId = user.Id, password = model.Password });
+                    }
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

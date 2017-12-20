@@ -1,4 +1,4 @@
-@model ClassDetails
+@model SchoolSystemWithCore.Models.ViewModels.CreateClassViewModel
 
 @{
     ViewData["Title"] = "Create New Class";
@@ -23,9 +23,9 @@
         <div asp-validation-summary="All" class="text-danger"></div>
 
         <div class="form-group has-feedback">
-            <input asp-for="ClassName" class="form-control" placeholder="Class">
+            <input asp-for="ClassRoomName" class="form-control" placeholder="Class">
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
-            <span asp-validation-for="ClassName" class="text-danger"></span>
+            <span asp-validation-for="ClassRoomName" class="text-danger"></span>
         </div>
         <div class="row">
             <div class="col-xs-4">

@@ -1,5 +1,5 @@
-﻿@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-@model RegisterViewModel
+@inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
+@model SchoolSystemWithCore.Models.ViewModels.CreateStudentViewModel
 @{
     Layout = null;
 }
@@ -40,74 +40,51 @@
 
 </head>
 <body class="hold-transition register-page">
-    
-@if (ViewBag.Message != null)
-{
-    <div class="box box-success box-solid">
-        <div class="box-header with-border">
-            <h3 class="box-title">@ViewBag.Message</h3>
 
-            <div class="box-tools pull-right">
-                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-            </div>
-        </div>
-    </div>
-}
+    @if (ViewBag.Student != null)
+    {
+        <p>@ViewBag.Student</p>
+    }
 
 <div class="register-box">
-        <div class="register-logo">
-            <a href="#"><b>MORA</b>Scorpions</a>
-        </div>
-
-        <div class="register-box-body">
-            <p class="login-box-msg">Register a new membership</p>
-            <form asp-controller="Account" asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
-                <div asp-validation-summary="All" class="text-danger"></div>
-                
-                <div class="form-group has-feedback">
-                    <input asp-for="Name" class="form-control" placeholder="Name">
-                    <span class="glyphicon glyphicon-user form-control-feedback"></span>
-                    <span asp-validation-for="Name" class="text-danger"></span>
-                </div>
-
-                <div class="form-group has-feedback">
-                    <input id="email" asp-for="Email" class="form-control" placeholder="Email">
-                    <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
-                    <span asp-validation-for="Email" class="text-danger"></span>
-                </div>
-                
-                <div class="form-group">
-                    <select asp-for="Role" asp-items="@ViewBag.RolesList" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
-                    </select>
-                </div>
-
-                <div class="form-group has-feedback">
-                    <input id="pass" asp-for="Password" class="form-control" placeholder="Password">
-                    <span class="glyphicon glyphicon-lock form-control-feedback"></span>
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-
-                <div class="form-group has-feedback">
-                    <input id="pass-re" asp-for="ConfirmPassword" class="form-control" placeholder="Retype password">
-                    <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-
-                <div class="row">
-                    <div class="col-xs-8">
-                        <div class="checkbox icheck">
-                            <label>
-                                <input type="checkbox"> I agree to the <a href="#">terms</a>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="col-xs-4">
-                        <button id="send" type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
-                    </div>
-                </div>
-            </form>
-        </div>
+    <div class="register-logo">
+        <a href="#"><b>MORA</b>Scorpions</a>
     </div>
+
+    <div class="register-box-body">
+        <p class="login-box-msg">Register a new student</p>
+        <p>Your user Id : @ViewBag.UserId</p>
+        <form asp-controller="DisAccount" asp-action="StudentRegister" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            <div asp-validation-summary="All" class="text-danger"></div>
+
+            <div class="form-group has-feedback">
+                <input asp-for="AdmissionNumber" class="form-control" placeholder="Addmission Number">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span asp-validation-for="AdmissionNumber" class="text-danger"></span>
+            </div>
+
+            <div class="form-group has-feedback">
+                <input type="date" asp-for="AdmissionDate" class="form-control"/>
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+                <span asp-validation-for="AdmissionDate" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <select asp-for="ClassRoomId" asp-items="@ViewBag.ClassList" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
+                </select>
+            </div>
+
+            <input type="hidden" asp-for="P_Id" value="@ViewBag.UserId"/>
+            <input type="hidden" asp-for="Password" value="@ViewBag.Password"/>
+
+            <div class="row">
+                <div class="col-xs-4">
+                    <button id="send" type="submit" class="btn btn-primary btn-block btn-flat">Register</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <environment names="Development">
     <script src="~/lib/jquery/dist/jquery.js"></script>
@@ -135,20 +112,20 @@
 <!-- iCheck -->
 <script src="~/js/icheck.min.js"></script>
 <script>
-    $(function () {
+    $(function() {
         $('input').iCheck({
             checkboxClass: 'icheckbox_square-blue',
             radioClass: 'iradio_square-blue',
             increaseArea: '20%' // optional
         });
     });
+    var dateElement = document.querySelector('input[type="date"]');
+    dateElement.value = '2017-12-11';
 </script>
-@section Scripts {
-    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
-    
-    
-    </script>
-}
+
+@{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+
 
 
 </body>

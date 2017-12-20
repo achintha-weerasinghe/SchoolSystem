@@ -179,31 +179,26 @@ namespace SchoolSystemWithCore.Data.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("SchoolSystemWithCore.Models.ClassDetails", b =>
+            modelBuilder.Entity("SchoolSystemWithCore.Models.Student", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("ApplicationUserId")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("ClassName")
-                        .IsRequired()
-                        .HasMaxLength(256);
+                    b.Property<string>("AdmissionDate")
+                        .IsRequired();
 
-                    b.HasKey("Id");
+                    b.Property<string>("AdmissionNumber")
+                        .IsRequired();
 
-                    b.ToTable("ClassDetailses");
-                });
+                    b.Property<string>("ApplicationUserId1");
 
-            modelBuilder.Entity("SchoolSystemWithCore.Models.StudentClass", b =>
-                {
-                    b.Property<string>("UserId");
+                    b.Property<int>("ClassRoomId");
 
-                    b.Property<string>("ClassDetailsId");
+                    b.HasKey("ApplicationUserId");
 
-                    b.HasKey("UserId");
+                    b.HasIndex("ApplicationUserId1");
 
-                    b.HasIndex("ClassDetailsId");
-
-                    b.ToTable("StudentClasses");
+                    b.ToTable("Students");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
@@ -243,16 +238,11 @@ namespace SchoolSystemWithCore.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("SchoolSystemWithCore.Models.StudentClass", b =>
+            modelBuilder.Entity("SchoolSystemWithCore.Models.Student", b =>
                 {
-                    b.HasOne("SchoolSystemWithCore.Models.ClassDetails", "ClassDetails")
+                    b.HasOne("SchoolSystemWithCore.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
-                        .HasForeignKey("ClassDetailsId");
-
-                    b.HasOne("SchoolSystemWithCore.Models.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("ApplicationUserId1");
                 });
         }
     }

@@ -15,9 +15,7 @@ namespace SchoolSystemWithCore.Data
         {
         }
 
-        public DbSet<ClassDetails> ClassDetailses { get; set; }
-        public DbSet<StudentClass> StudentClasses { get; set; }
-
+        public DbSet<Student> Students { get; set; }
         public ApplicationDbContext()
         {
         }
