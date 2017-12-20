@@ -16,6 +16,7 @@ namespace SchoolSystemWithCore.Data
         }
 
         public DbSet<Student> Students { get; set; }
+        public DbSet<Parent> Parents { get; set; }
         public ApplicationDbContext()
         {
         }

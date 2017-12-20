@@ -1,5 +1,5 @@
 @inject Microsoft.ApplicationInsights.AspNetCore.JavaScriptSnippet JavaScriptSnippet
-@model SchoolSystemWithCore.Models.ViewModels.CreateStudentViewModel
+@model SchoolSystemWithCore.Models.ViewModels.CreateCombinedStudParentViewModel
 @{
     Layout = null;
 }
@@ -41,11 +41,6 @@
 </head>
 <body class="hold-transition register-page">
 
-    @if (ViewBag.Student != null)
-    {
-        <p>@ViewBag.Student</p>
-    }
-
 <div class="register-box">
     <div class="register-logo">
         <a href="#"><b>MORA</b>Scorpions</a>
@@ -73,9 +68,41 @@
                 <select asp-for="ClassRoomId" asp-items="@ViewBag.ClassList" class="form-control select2 select2-hidden-accessible" style="width: 100%;" tabindex="-1" aria-hidden="true">
                 </select>
             </div>
+            
+            <p>Parent Details</p>
+            
+            <div class="form-group has-feedback">
+                <input asp-for="ParentName" class="form-control" placeholder="Parent Name">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span asp-validation-for="ParentName" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group has-feedback">
+                <input type="email" asp-for="ParentEmail" class="form-control" placeholder="Parent Email">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span asp-validation-for="ParentEmail" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group has-feedback">
+                <input asp-for="TpNumber" class="form-control" placeholder="Parent Telephone">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span asp-validation-for="TpNumber" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group has-feedback">
+                <input asp-for="Password" class="form-control" placeholder="Password for Parent">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group has-feedback">
+                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            </div>
 
             <input type="hidden" asp-for="P_Id" value="@ViewBag.UserId"/>
-            <input type="hidden" asp-for="Password" value="@ViewBag.Password"/>
+            <input type="hidden" asp-for="StudentPassword" value="@ViewBag.Password"/>
 
             <div class="row">
                 <div class="col-xs-4">

@@ -14,5 +14,6 @@ namespace SchoolSystemWithCore.Models.ViewModels
         public string PicUrl { get; set; }
         public string Role_Id { get; set; }
         public string TpNumber { get; set; }
+        public string StudentId { get; set; }
     }
 }
