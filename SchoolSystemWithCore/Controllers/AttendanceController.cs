@@ -20,7 +20,7 @@ namespace SchoolSystemWithCore.Controllers
     [Authorize]
     public class AttendanceController : Controller
     {
-        private readonly string _baseUrl = "http://attendanceazuretryschoolmanagementmorascorpions.azurewebsites.net";
+        private readonly string _baseUrl = "http://sclmanagement.azurewebsites.net";
         private readonly ApplicationDbContext _context;
         public AttendanceController(ApplicationDbContext context)
         {

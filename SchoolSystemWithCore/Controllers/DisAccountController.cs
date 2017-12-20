@@ -112,7 +112,7 @@ namespace SchoolSystemWithCore.Controllers
                 AdmissionNumber = model.AdmissionNumber,
                 ClassRoomId = model.ClassRoomId,
                 Email = user.Email,
-                Name = user.Email,
+                Name = user.Name,
                 Password = model.StudentPassword,
                 Role_Id = role.Id
             };
