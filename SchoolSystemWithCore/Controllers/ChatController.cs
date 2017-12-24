@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 using SchoolSystemWithCore.Models;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -43,16 +44,34 @@ namespace SchoolSystemWithCore.Controllers
             return View();
         }
 
+        [HttpPost]
         public IActionResult Conversation(ChatSelectorViewModel model)
         {
-            var user = _userManager.GetUserAsync(HttpContext.User);
-            ViewBag.UserId = user.Result.Id;
-            ViewBag.Email = user.Result.Email;
-            ViewBag.Name = user.Result.Name;
-            
+            var value = JsonConvert.SerializeObject(model);
+            HttpContext.Session.SetString("ChatModel", value);
 
-            if (model.Person == null)
-                return RedirectToAction("Index", "Chat");
+            return RedirectToAction("Conversation");
+        }
+        [HttpGet]
+        public IActionResult Conversation()
+        {
+            ChatSelectorViewModel model = null;
+            var value = HttpContext.Session.GetString("ChatModel");
+            if (value != null)
+            {
+                model = JsonConvert.DeserializeObject<ChatSelectorViewModel>(value);
+            }
+
+            if (model?.Person == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var user = _userManager.GetUserAsync(HttpContext.User).Result;
+            ViewBag.UserId = user.Id;
+            ViewBag.Email = user.Email;
+            ViewBag.Name = user.Name;
+            
             var personName = _userManager.Users.FirstOrDefault(x => x.Id == model.Person).Name;
             ViewBag.Person = model.Person;
             ViewBag.PersonName = personName;

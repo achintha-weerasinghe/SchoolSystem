@@ -152,9 +152,14 @@ namespace SchoolSystemWithCore.Controllers
                     //await _signInManager.SignInAsync(user, isPersistent: false);
                     //_logger.LogInformation(3, "User created a new account with password.");
                     if (model.Role == "Student")
-                    {
-                        return RedirectToAction("StudentRegister", "DisAccount", new { userId = user.Id, password = model.Password });
-                    }
+                        return RedirectToAction("StudentRegister", "DisAccount", 
+                            new { userId = user.Id, password = model.Password });
+                    else if (model.Role == "Teacher")
+                        return RedirectToAction("TeacherRegister", "DisAccount",
+                            new {userId = user.Id, password = model.Password});
+                    else if (model.Role == "Principal")
+                        return RedirectToAction("PrincipalRegister", "DisAccount",
+                            new { userId = user.Id, password = model.Password });
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

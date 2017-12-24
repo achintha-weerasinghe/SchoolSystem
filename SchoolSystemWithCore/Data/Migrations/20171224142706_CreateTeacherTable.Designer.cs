@@ -8,9 +8,10 @@ using SchoolSystemWithCore.Data;
 namespace SchoolSystemWithCore.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171224142706_CreateTeacherTable")]
+    partial class CreateTeacherTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -195,26 +196,6 @@ namespace SchoolSystemWithCore.Data.Migrations
                     b.ToTable("Parents");
                 });
 
-            modelBuilder.Entity("SchoolSystemWithCore.Models.Principal", b =>
-                {
-                    b.Property<string>("ApplicationUserId")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("ApplicationUserId1");
-
-                    b.Property<string>("Grade")
-                        .IsRequired();
-
-                    b.Property<string>("Phone")
-                        .IsRequired();
-
-                    b.HasKey("ApplicationUserId");
-
-                    b.HasIndex("ApplicationUserId1");
-
-                    b.ToTable("Principals");
-                });
-
             modelBuilder.Entity("SchoolSystemWithCore.Models.Student", b =>
                 {
                     b.Property<string>("ApplicationUserId")
@@ -297,13 +278,6 @@ namespace SchoolSystemWithCore.Data.Migrations
                 });
 
             modelBuilder.Entity("SchoolSystemWithCore.Models.Parent", b =>
-                {
-                    b.HasOne("SchoolSystemWithCore.Models.ApplicationUser", "ApplicationUser")
-                        .WithMany()
-                        .HasForeignKey("ApplicationUserId1");
-                });
-
-            modelBuilder.Entity("SchoolSystemWithCore.Models.Principal", b =>
                 {
                     b.HasOne("SchoolSystemWithCore.Models.ApplicationUser", "ApplicationUser")
                         .WithMany()
